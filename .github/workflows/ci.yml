@@ -52,7 +52,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Test Local Action
-        id: test-action'
+        id: test-action
         uses: ./
         with:
           test-id: '4c42cfb1-5b2f-4167-be0d-f43e7eb78ab7'
