@@ -2752,8 +2752,8 @@ async function run() {
 
     const url = 'https://execution.cognisim.io/execute_test_id'
     const res = await client.postJson(url, { test_id: testId })
-
-    if (res.message.statusCode !== 200) {
+    //console.log(res)
+    if (res.statusCode !== 200) {
       throw Error(`Failed to run test: ${res.message.statusMessage}`)
     }
   } catch (error) {

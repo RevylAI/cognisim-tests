@@ -45,10 +45,9 @@ describe('run function', () => {
     process.env['COGNISIM_API_TOKEN'] = 'test-token'
     core.getInput.mockReturnValue('test-id')
     mockHttpClient.postJson.mockResolvedValue({
-      message: {
         statusCode: 200
       }
-    })
+    )
 
     await expect(main.run()).resolves.not.toThrow()
 
