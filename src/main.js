@@ -1,4 +1,5 @@
 const core = require('@actions/core')
+const httpm = require('@actions/http-client')
 const { wait } = require('./wait')
 
 /**
@@ -7,18 +8,27 @@ const { wait } = require('./wait')
  */
 async function run() {
   try {
-    const ms = core.getInput('milliseconds', { required: true })
+    const testId = core.getInput('test-id', { required: true })
 
-    // Debug logs are only output if the `ACTIONS_STEP_DEBUG` secret is true
-    core.debug(`Waiting ${ms} milliseconds ...`)
+    // `who-to-greet` input defined in action metadata fil
+    if (!process.env["COGNISIM_API_TOKEN"]) {
+      throw new Error("Missing COGNISIM_API_TOKEN get API token from cognisim settings")
+    }
 
-    // Log the current timestamp, wait, then log the new timestamp
-    core.debug(new Date().toTimeString())
-    await wait(parseInt(ms, 10))
-    core.debug(new Date().toTimeString())
+    const client = new httpm.HttpClient('cognisim-run-action', [], {
+      headers: {
+        'Authorization': `Bearer ${process.env["COGNISIM_API_TOKEN"]}`,
+        'Content-Type': 'application/json'
+      }
+    });
 
-    // Set outputs for other workflow steps to use
-    core.setOutput('time', new Date().toTimeString())
+    const url = 'https://execution.cognisim.io/execute_test_id';
+    const res = await client.postJson(url, { test_id: testId });
+
+    if (res.message.statusCode !== 200) {
+      throw new Error(`Failed to run test: ${res.message.statusMessage}`)
+    }
+    
   } catch (error) {
     // Fail the workflow run if an error occurs
     core.setFailed(error.message)
