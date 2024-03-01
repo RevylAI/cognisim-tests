@@ -23,7 +23,7 @@ async function run() {
       }
     })
 
-    const url = 'https://execution.cognisim.io/execute_test_id'
+    const url = 'https://device.cognisim.io/execute_test_id'
     const res = await client.postJson(url, { test_id: testId })
     //console.log(res)
     if (res.statusCode !== 200) {
