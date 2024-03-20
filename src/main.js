@@ -22,17 +22,21 @@ async function run() {
         'Content-Type': 'application/json'
       }
     })
-
+    console.log(testId)
     const url = 'https://device.cognisim.io/execute_test_id'
-    const res = await client.postJson(url, { test_id: testId })
+    const body = { test_id: testId }
+    const res = await client.postJson(url, body)
     //console.log(res)
-    if (res.statusCode !== 200) {
-      throw Error(`Failed to run test: ${res.message.statusMessage}`)
+    if (res.statusCode !== 200 || !(res.result && res.result.success)) {
+      throw new Error(`Failed to run test:`);
     }
+    return true;
+  
   } catch (error) {
     // Fail the workflow run if an error occurs
     core.setFailed(error.message)
   }
+   
 }
 
 module.exports = {

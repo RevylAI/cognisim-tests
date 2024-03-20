@@ -30,14 +30,14 @@ describe('run function', () => {
     mockHttpClient.postJson.mockResolvedValue({
       message: {
         statusCode: 400,
-        statusMessage: 'Bad Request'
+        result: "FAiled"
       }
     })
 
     await main.run()
 
     expect(core.setFailed).toHaveBeenCalledWith(
-      'Failed to run test: Bad Request'
+      'Failed to run test:'
     )
   })
 
@@ -45,7 +45,13 @@ describe('run function', () => {
     process.env['COGNISIM_API_TOKEN'] = 'test-token'
     core.getInput.mockReturnValue('test-id')
     mockHttpClient.postJson.mockResolvedValue({
-      statusCode: 200
+      statusCode: 200,
+      result: {
+        success: true,
+        result: {
+          success: true
+        }
+      }
     })
 
     await expect(main.run()).resolves.not.toThrow()
