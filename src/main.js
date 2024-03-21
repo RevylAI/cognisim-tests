@@ -27,10 +27,15 @@ async function run() {
     const body = { test_id: testId }
     const res = await client.postJson(url, body)
     //console.log(res)
-    if (res.statusCode !== 200 || !(res.result && res.result.success)) {
-      throw new Error(`Failed to run test:`);
+    if (res.statusCode !== 200) {
+      throw Error(`Failed to run test: ${res.message}`)
     }
-    return true;
+    if (res.result && res.result.sucess) {
+      console.log('Test run successfully')
+      return res.result.success
+    } else {
+      throw Error(`Failed to run test:`)
+    }
   
   } catch (error) {
     // Fail the workflow run if an error occurs
