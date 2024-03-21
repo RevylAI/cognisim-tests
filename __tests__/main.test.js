@@ -30,15 +30,13 @@ describe('run function', () => {
     mockHttpClient.postJson.mockResolvedValue({
       message: {
         statusCode: 400,
-        result: "FAiled"
+        result: 'FAiled'
       }
     })
 
     await main.run()
 
-    expect(core.setFailed).toHaveBeenCalledWith(
-      'Failed to run test:'
-    )
+    expect(core.setFailed).toHaveBeenCalledWith('Failed to run test:')
   })
 
   it('should not throw an error if the API request is successful', async () => {

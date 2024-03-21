@@ -36,12 +36,10 @@ async function run() {
     } else {
       throw Error(`Failed to run test:`)
     }
-  
   } catch (error) {
     // Fail the workflow run if an error occurs
     core.setFailed(error.message)
   }
-   
 }
 
 module.exports = {
