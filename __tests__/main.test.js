@@ -36,7 +36,7 @@ describe('run function', () => {
 
     await main.run()
 
-    expect(core.setFailed).toHaveBeenCalledWith('Failed to run test:')
+    expect(core.setFailed).toHaveBeenCalledWith('Failed to run test: api')
   })
 
   it('should not throw an error if the API request is successful', async () => {

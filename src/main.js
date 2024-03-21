@@ -28,9 +28,9 @@ async function run() {
     const res = await client.postJson(url, body)
     //console.log(res)
     if (res.statusCode !== 200) {
-      throw Error(`Failed to run test: ${res.message}`)
+      throw Error(`Failed to run test: api`)
     }
-    if (res.result && res.result.sucess) {
+    if (res.result && res.result.success) {
       console.log('Test run successfully')
       return res.result.success
     } else {
