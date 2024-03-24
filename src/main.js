@@ -28,13 +28,15 @@ async function run() {
     const res = await client.postJson(url, body)
     //console.log(res)
     if (res.statusCode !== 200) {
-      throw Error(`Failed to run test: api`)
+      throw Error(`Failed to run test: API returned status code ${res.statusCode}`)
     }
     if (res.result && res.result.success) {
-      console.log('Test run successfully')
+      console.log('Test run successfully and passed View Artifacts at cognisim.io/testhistory ')
       return res.result.success
+    } else if (res.result && !res.result.success) {
+      throw Error(`Test ran successfully but failed: View Artifacts at cognisim.io/testhistory with full reasoning`)
     } else {
-      throw Error(`Failed to run test:`)
+      throw Error(`Failed to run test: No result returned from API`)
     }
   } catch (error) {
     // Fail the workflow run if an error occurs
