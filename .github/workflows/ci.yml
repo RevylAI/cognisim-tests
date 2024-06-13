@@ -18,11 +18,11 @@ jobs:
       - name: Checkout
         id: checkout
         uses: actions/checkout@v4
-
       - name: Test Local Action
         id: test-action
         uses: ./
         env:
-          COGNISIM_API_TOKEN: ${{ secrets.COGNISIM_API_TOKEN }}
+          COGNISIM_API_TOKEN: ${{ secrets.COGNISIM_API_KEY }}
         with:
-          test-id: '4c42cfb1-5b2f-4167-be0d-f43e7eb78ab7'
+          test-id: 'ddf8ea21-22a3-40dd-a1f1-1a3f95204dc0'
+          

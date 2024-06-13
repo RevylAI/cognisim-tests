@@ -1,4 +1,4 @@
-name: 'CogniSim Tests'
+name: 'CogniSim GH Action'
 description: 'Run a Cognisim test given an api key and a test id.'
 author: 'CogniSim'
 
@@ -7,6 +7,15 @@ inputs:
   test-id:
     description: 'The test id to run.'
     required: true
+  cognisim-device-url:
+    description: 'The Cognisim device URL to use.'
+    required: false
+  cognisim-backend-url:
+    description: 'The Cognisim backend URL to use.'
+    required: false
+  cognisim-action-url:
+    description: 'The Cognisim action URL to use.'
+    required: false
 
 # Define your outputs here.
 outputs:
