@@ -8,8 +8,12 @@ const httpm = require('@actions/http-client')
 async function run() {
   try {
     const testId = core.getInput('test-id', { required: true })
+    const deviceUrl = core.getInput('cognisim-device-url', { required: false }) // Retrieve input
+    const backendUrl =
+      core.getInput('cognisim-backend-url', { required: false }) || null // Retrieve input or use null
+    const actionUrl =
+      core.getInput('cognisim-action-url', { required: false }) || null // Retrieve input or use null
 
-    // `who-to-greet` input defined in action metadata fil
     if (!process.env['COGNISIM_API_TOKEN']) {
       throw Error(
         'Missing COGNISIM_API_TOKEN get API token from cognisim settings'
@@ -22,24 +26,37 @@ async function run() {
         'Content-Type': 'application/json'
       }
     })
-    console.log(testId)
-    const url = 'https://device.cognisim.io/execute_test_id'
-    const body = { test_id: testId }
+
+    const url = deviceUrl || 'https://device.cognisim.io/execute_test_id' // Use the input if provided
+    console.log('Test ID:', testId)
+    console.log('URL:', url)
+    console.log('Backend URL:', backendUrl)
+    console.log('Action URL:', actionUrl)
+    const body = {
+      test_id: testId,
+      backend_url: backendUrl,
+      action_url: actionUrl
+    }
     const res = await client.postJson(url, body)
-    //console.log(res)
+
     if (res.statusCode !== 200) {
-      throw Error(`Failed to run test: API returned status code ${res.statusCode}`)
+      throw Error(
+        `Failed to run test: API returned status code ${res.statusCode}`
+      )
     }
     if (res.result && res.result.success) {
-      console.log('Test run successfully and passed View Artifacts at cognisim.io/testhistory ')
+      console.log(
+        'Test run successfully and passed View Artifacts at cognisim.io/testhistory '
+      )
       return res.result.success
     } else if (res.result && !res.result.success) {
-      throw Error(`Test ran successfully but failed: View Artifacts at cognisim.io/testhistory with full reasoning`)
+      throw Error(
+        'Test ran successfully but failed: View Artifacts at cognisim.io/testhistory with full reasoning'
+      )
     } else {
-      throw Error(`Failed to run test: No result returned from API`)
+      throw Error('Failed to run test: No result returned from API')
     }
   } catch (error) {
-    // Fail the workflow run if an error occurs
     core.setFailed(error.message)
   }
 }
